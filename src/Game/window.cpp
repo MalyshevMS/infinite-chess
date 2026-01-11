@@ -14,13 +14,15 @@ void infChess::Window::draw(Drawable& target) {
     target.drawOn(window);
 }
 
-bool infChess::Window::isKeyPressed(sf::Keyboard::Key key)
-{
+bool infChess::Window::isKeyPressed(sf::Keyboard::Key key) {
     return sf::Keyboard::isKeyPressed(key);
 }
 
-bool infChess::Window::isOpen()
-{
+sf::Vector2i infChess::Window::getMousePos() {
+    return sf::Mouse::getPosition(window);
+}
+
+bool infChess::Window::isOpen(){
     return window.isOpen();
 }
 
@@ -41,4 +43,11 @@ void infChess::Window::frameStart() {
 void infChess::Window::bindCamera(Camera& other) {
     if (camera) delete camera;
     camera = &other;
+}
+
+sf::Vector2f infChess::Window::screenToWorld(sf::Vector2f screen, const Camera &cam) {
+    sf::Vector2f size = { (float)window.getSize().x, (float)window.getSize().y };
+    sf::Vector2f centered = screen - size * 0.5f;
+
+    return cam.pos + centered / cam.mag;
 }

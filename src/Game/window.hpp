@@ -51,8 +51,10 @@ namespace infChess {
         void draw(Drawable& target);
         float getDeltaTime() { return deltaTime; };
         bool isKeyPressed(sf::Keyboard::Key key);
+        sf::Vector2i getMousePos();
         void callback(const std::optional<sf::Event>&& event);
         void bindCamera(Camera& other);
+        sf::Vector2f screenToWorld(sf::Vector2f screen, const Camera& cam );
 
         void frameStart();
         void close() { window.close(); }
