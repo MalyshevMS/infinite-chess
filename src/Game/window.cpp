@@ -5,7 +5,7 @@ infChess::Window::Window(sf::VideoMode mode, std::string title, bool fullscreen)
     view = window.getDefaultView();
     clock = sf::Clock();
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(144);
 
     camera = new Camera;
 }
@@ -18,8 +18,12 @@ bool infChess::Window::isKeyPressed(sf::Keyboard::Key key) {
     return sf::Keyboard::isKeyPressed(key);
 }
 
-sf::Vector2i infChess::Window::getMousePos() {
-    return sf::Mouse::getPosition(window);
+bool infChess::Window::isButtonPressed(sf::Mouse::Button button) {
+    return sf::Mouse::isButtonPressed(button);
+}
+
+sf::Vector2f infChess::Window::getMousePos() {
+    return { (float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y};
 }
 
 bool infChess::Window::isOpen(){
@@ -28,6 +32,10 @@ bool infChess::Window::isOpen(){
 
 void infChess::Window::frameStart() {
     deltaTime = clock.restart().asSeconds();
+
+    currentCursor = getMousePos();
+    deltaCursor = lastCursor - currentCursor;
+    lastCursor = currentCursor;
 
     while (auto event = window.pollEvent()) {
         callback(std::move(event));
@@ -45,9 +53,9 @@ void infChess::Window::bindCamera(Camera& other) {
     camera = &other;
 }
 
-sf::Vector2f infChess::Window::screenToWorld(sf::Vector2f screen, const Camera &cam) {
+sf::Vector2f infChess::Window::screenToWorld(sf::Vector2f screen) {
     sf::Vector2f size = { (float)window.getSize().x, (float)window.getSize().y };
     sf::Vector2f centered = screen - size * 0.5f;
 
-    return cam.pos + centered / cam.mag;
+    return camera->pos + centered / camera->mag;
 }

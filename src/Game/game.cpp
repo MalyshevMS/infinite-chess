@@ -17,13 +17,13 @@ void infChess::Game::run() {
     window.__cb_MouseWheelScrolled = [&](const sf::Event::MouseWheelScrolled* info){
         if (info->wheel != sf::Mouse::Wheel::Vertical) return;
 
-        const sf::Vector2f mouseScreen = { (float)window.getMousePos().x, (float)window.getMousePos().y };
-        const sf::Vector2f before = window.screenToWorld(mouseScreen, cam);
+        const sf::Vector2f mouseScreen = window.getMousePos();
+        const sf::Vector2f before = window.screenToWorld(mouseScreen);
 
         cam.mag *= std::pow(cam.zoomBase, info->delta);
         cam.mag = std::clamp(cam.mag, 0.1f, 5.f);
 
-        const sf::Vector2f after = window.screenToWorld(mouseScreen, cam);
+        const sf::Vector2f after = window.screenToWorld(mouseScreen);
 
         cam.pos += (before - after);
     };
@@ -38,14 +38,17 @@ void infChess::Game::run() {
         if (window.isKeyPressed(sf::Keyboard::Key::Escape)) window.close();
 
         const float move = cam.speed * dt / cam.mag;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+        if (window.isKeyPressed(sf::Keyboard::Key::W))
             cam.y -= move;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+        if (window.isKeyPressed(sf::Keyboard::Key::S))
             cam.y += move;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        if (window.isKeyPressed(sf::Keyboard::Key::A))
             cam.x -= move;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        if (window.isKeyPressed(sf::Keyboard::Key::D))
             cam.x += move;
+        if (window.isButtonPressed(sf::Mouse::Button::Middle)) {
+            cam.pos += window.getDeltaCursor() / cam.mag;
+        }
 
         window.frameEnd();
     }

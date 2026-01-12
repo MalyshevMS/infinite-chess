@@ -18,6 +18,10 @@ namespace infChess {
         Camera* camera;
 
         float deltaTime;
+
+        sf::Vector2f deltaCursor;
+        sf::Vector2f currentCursor;
+        sf::Vector2f lastCursor;
     public:
         /// Callback functions
 
@@ -43,22 +47,27 @@ namespace infChess {
         std::function<void(const sf::Event::TextEntered*)> __cb_TextEntered = nullptr;
         std::function<void(const sf::Event::TouchBegan*)> __cb_TouchBegan = nullptr;
         std::function<void(const sf::Event::TouchEnded*)> __cb_TouchEnded = nullptr;
-
         std::function<void(const sf::Event::TouchMoved*)> __cb_TouchMoved = nullptr;
+
         Window(sf::VideoMode mode, std::string title, bool fullscreen);
         sf::RenderWindow* nativeHandle() { return &window; }
 
         void draw(Drawable& target);
-        float getDeltaTime() { return deltaTime; };
-        bool isKeyPressed(sf::Keyboard::Key key);
-        sf::Vector2i getMousePos();
-        void callback(const std::optional<sf::Event>&& event);
-        void bindCamera(Camera& other);
-        sf::Vector2f screenToWorld(sf::Vector2f screen, const Camera& cam );
 
-        void frameStart();
-        void close() { window.close(); }
+        float getDeltaTime() { return deltaTime; };
+        sf::Vector2f getDeltaCursor() { return deltaCursor; }
+
+        sf::Vector2f getMousePos();
+        bool isKeyPressed(sf::Keyboard::Key key);
+        bool isButtonPressed(sf::Mouse::Button button);
+
+        sf::Vector2f screenToWorld(sf::Vector2f screen);
+        
+        void bindCamera(Camera& other);
         bool isOpen();
+        void frameStart();
+        void callback(const std::optional<sf::Event>&& event);
         void frameEnd() { window.display(); }
+        void close() { window.close(); }
     };
 }
