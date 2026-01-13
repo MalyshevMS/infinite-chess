@@ -14,12 +14,16 @@ add_executable(${PROJECT_NAME}
 
     src/Game/window.cpp
     src/Game/callback.cpp
+
+    src/Piece/piece.cpp
+    src/Piece/pawn.cpp
 )
 
 add_subdirectory(ext/sfml)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     sfml-graphics
+    sfml-system
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

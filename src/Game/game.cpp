@@ -1,10 +1,12 @@
 #include "game.hpp"
+#include "../Piece/pawn.hpp"
 #include <algorithm>
 
 void infChess::Game::run() {
     Window window = Window(sf::VideoMode::getDesktopMode(), "Infinite Chess", true);
 
     Board board(true);
+    Pieces::Pawn p1(Piece::Color::White);
 
     Camera cam;
     cam.pos = { Board::board / 2.f, Board::board / 2.f};
@@ -28,12 +30,17 @@ void infChess::Game::run() {
         cam.pos += (before - after);
     };
 
+    window.__cb_KeyPressed = [&](const sf::Event::KeyPressed* info){
+        if (info->code == sf::Keyboard::Key::E) p1.move(board, {0, -1});
+    };
+
     while(window.isOpen()) {
         window.frameStart();
 
         const auto dt = window.getDeltaTime();
 
         window.draw(board);
+        window.draw(p1);
 
         if (window.isKeyPressed(sf::Keyboard::Key::Escape)) window.close();
 
