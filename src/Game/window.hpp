@@ -60,6 +60,7 @@ namespace infChess {
         sf::Vector2f getMousePos();
         bool isKeyPressed(sf::Keyboard::Key key);
         bool isButtonPressed(sf::Mouse::Button button);
+        void setCursor(sf::Cursor::Type type);
 
         sf::Vector2f screenToWorld(sf::Vector2f screen);
         

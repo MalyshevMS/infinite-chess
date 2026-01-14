@@ -6,19 +6,17 @@
 
 namespace infChess {
     class Piece : public Drawable {
-    public:
-        enum class Color {
-            White, Black
-        };
     protected:
         sf::Texture texture;
         sf::Sprite sprite;
         sf::Vector2i position;
-        Color color;
+        class Board* pBoard;
+        class Board& board = *pBoard;
     public:
-        Piece(std::string texturePath, Color color);
+        Piece(class Board& board, std::string texturePath);
 
-        virtual bool move(class Board& board, sf::Vector2i offset);
+
+        virtual bool move(sf::Vector2i offset);
         virtual void drawOn(sf::RenderTarget& surface) override;
         
         virtual sf::Vector2i getPosition();

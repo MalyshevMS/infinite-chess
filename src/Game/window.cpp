@@ -22,6 +22,12 @@ bool infChess::Window::isButtonPressed(sf::Mouse::Button button) {
     return sf::Mouse::isButtonPressed(button);
 }
 
+void infChess::Window::setCursor(sf::Cursor::Type type) {
+    auto cursor = sf::Cursor::createFromSystem(type);
+    if (cursor)
+    window.setMouseCursor(*cursor);
+}
+
 sf::Vector2f infChess::Window::getMousePos() {
     return { (float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y};
 }

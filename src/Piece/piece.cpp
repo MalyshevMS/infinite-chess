@@ -1,16 +1,22 @@
 #include "piece.hpp"
 #include "../Board/board.hpp"
 
-infChess::Piece::Piece(std::string texturePath, Color color) : sprite(texture), color(color) {
+infChess::Piece::Piece(class Board& board, std::string texturePath)
+ : sprite(texture), pBoard(&board) {
     if (!texture.loadFromFile(texturePath)) return;
+    texture.setSmooth(true);
+    
     sprite.setTexture(texture, true);
 
-    if (color == Color::Black) {
-        sprite.setColor(sf::Color::Black);
-    }
+    auto bounds = sprite.getLocalBounds();
+
+    sprite.setScale({
+        Board::cell / bounds.size.x,
+        Board::cell / bounds.size.y
+    });
 }
 
-bool infChess::Piece::move(Board& board, sf::Vector2i offset) {
+bool infChess::Piece::move(sf::Vector2i offset) {
     sprite.move(sf::Vector2f(board.cell * offset));
     return true;
 }

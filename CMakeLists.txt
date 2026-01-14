@@ -16,7 +16,8 @@ add_executable(${PROJECT_NAME}
     src/Game/callback.cpp
 
     src/Piece/piece.cpp
-    src/Piece/pawn.cpp
+
+    src/Piece/white/pawn.cpp
 )
 
 add_subdirectory(ext/sfml)
@@ -28,6 +29,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    COMPILE_FLAGS -fdiagnostics-all-candidates
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
